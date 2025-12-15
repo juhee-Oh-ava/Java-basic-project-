@@ -1,93 +1,290 @@
-# 11-pjt
+# 1. 프로젝트 개요
 
+사용자는 스토어에서 **전자책(Book)**, **영화(Movie)**, **음악(Music)**을 확인할 수 있다.
 
+각 콘텐츠는 **공통 정보를 가지지만 종류별로 고유한 정보/기능이 있다.**
 
-## Getting started
+또한, 일부 콘텐츠는 **구매(Purchase)** 또는 **대여(Rent)**가 가능하며,
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+인터페이스를 통해 공통 기능을 강제한다.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+---
 
-## Add your files
+---
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+# 2. 클래스 설계 명세
 
+---
+
+## ✔ 2-1. 추상적 상위 클래스: `Content`
+
+### ● 목적
+
+책/영화/음악의 공통 속성과 기능을 정의한다.
+
+### ● 접근 제어
+
+클래스: **public class Content**
+
+### ● 필드(멤버 변수)
+
+| 접근제어 | 타입 | 이름 | 설명 |
+| --- | --- | --- | --- |
+| protected | String | title | 콘텐츠 제목 |
+| protected | int | price | 가격 |
+
+### ● 생성자
+
+```java
+public Content(String title, int price)
 ```
-cd existing_repo
-git remote add origin https://lab.ssafy.com/miy7625/11-pjt.git
-git branch -M master
-git push -uf origin master
+
+### ● 메소드
+
+### 1) `public void showInfo()`
+
+- 제목과 가격을 출력한다.
+- 자식 클래스에서 **오버라이드**하여 추가 정보 출력 가능.
+
+예시 출력 형식:
+
+`[Book] Title: ~~ / Price: ~~`
+
+`[Movie] Title: ~~ / Price: ~~ / Running Time: ~~`
+
+### 2) Getter/Setter
+
+| 메소드 | 설명 |
+| --- | --- |
+| `getTitle()` | 제목 반환 |
+| `setTitle(String title)` | 제목 변경 |
+| `getPrice()` | 가격 반환 |
+| `setPrice(int price)` | 가격 설정 (0 미만일 경우 예외 발생) |
+
+---
+
+---
+
+# 3. 하위 클래스 설계
+
+---
+
+## ✔ 3-1. 클래스: `Book` (Content 상속)
+
+### ● 필드
+
+| 타입 | 이름 | 설명 |
+| --- | --- | --- |
+| String | author | 저자 이름 |
+
+### ● 생성자
+
+```java
+public Book(String title, int price, String author)
 ```
 
-## Integrate with your tools
+### ● 메소드
 
-- [ ] [Set up project integrations](https://lab.ssafy.com/miy7625/11-pjt/-/settings/integrations)
+- `@Override public void showInfo()`
+    - 출력 예:
+        
+        `"[Book] Title: ~~ / Price: ~~ / Author: ~~"`
+        
 
-## Collaborate with your team
+---
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+## ✔ 3-2. 클래스: `Movie` (Content 상속)
 
-## Test and Deploy
+### ● 필드
 
-Use the built-in continuous integration in GitLab.
+| 타입 | 이름 | 설명 |
+| --- | --- | --- |
+| int | runningTime | 상영 시간(분) |
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+### ● 생성자
 
-***
+```java
+public Movie(String title, int price, int runningTime)
+```
 
-# Editing this README
+### ● 메소드
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+- `@Override public void showInfo()`
+    - 출력 예:
+        
+        `"[Movie] Title: ~~ / Price: ~~ / Running Time: ~~min"`
+        
 
-## Suggestions for a good README
+---
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+## ✔ 3-3. 클래스: `Music` (Content 상속)
 
-## Name
-Choose a self-explaining name for your project.
+### ● 필드
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+| 타입 | 이름 | 설명 |
+| --- | --- | --- |
+| String | singer | 가수 이름 |
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+### ● 생성자
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+```java
+public Music(String title, int price, String singer)
+```
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+### ● 메소드
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+- `@Override public void showInfo()`
+    - 출력 예:
+        
+        `"[Music] Title: ~~ / Price: ~~ / Singer: ~~"`
+        
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+---
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+---
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+# 4. 인터페이스 설계 명세
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+---
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+## ✔ 4-1. 인터페이스: `Purchasable`
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+```java
+public interface Purchasable {
+    void buy();
+}
+```
 
-## License
-For open source projects, say how it is licensed.
+### ● 규칙
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+- Book, Movie, Music 모두 구매 가능
+    
+    → **3개 클래스 모두 Purchasable을 implements**
+    
+
+### ● buy() 동작
+
+- 구현 클래스에서 구매 메시지를 출력한다.
+- 출력 예:
+    - `"[Book] 해리포터 구매 완료"`
+    - `"[Movie] 인셉션 구매 완료"`
+    - `"[Music] Dynamite 구매 완료"`
+
+---
+
+## ✔ 4-2. 인터페이스: `Rentable`
+
+```java
+public interface Rentable {
+    void rent();
+    void extendRent();
+}
+```
+
+### ● 규칙
+
+- **Book, Movie만 implements Rentable**
+- Music은 rent 불가
+
+### ● rent() 출력 예
+
+- `"[Book] ~~ 대여 완료"`
+- `"[Movie] ~~ 대여 완료"`
+
+### ● extendRent() 출력 예
+
+- `"대여 기간 연장 완료"`
+
+---
+
+---
+
+# 5. 메인 프로그램 요구사항 (Main class)
+
+---
+
+## ✔ 5-1. ArrayList로 다양한 콘텐츠 저장
+
+```java
+ArrayList<Content> contents = new ArrayList<>();
+```
+
+### 리스트에 추가해야 할 콘텐츠(예시)
+
+```java
+new Book("해리포터", 12000, "J.K. Rowling")
+new Movie("인셉션", 15000, 148)
+new Music("Dynamite", 2000, "BTS")
+```
+
+---
+
+## ✔ 5-2. showInfo() 출력
+
+```java
+for(Content c : contents) {
+    c.showInfo();
+}
+```
+
+### 동적 바인딩 확인
+
+각 객체 타입(Book/Movie/Music)에 맞게 오버라이딩된 showInfo() 출력되어야 함.
+
+---
+
+## ✔ 5-3. 구매 기능 테스트
+
+```java
+if(c instanceof Purchasable) {
+    ((Purchasable)c).buy();
+}
+```
+
+---
+
+## ✔ 5-4. 대여 기능 테스트
+
+```java
+if(c instanceof Rentable) {
+    ((Rentable)c).rent();
+    ((Rentable)c).extendRent();
+}
+```
+
+(Music은 instanceof Rentable → false)
+
+---
+
+---
+
+# 6. 예외 처리 요구사항
+
+- Content의 `setPrice(int price)` 실행 시
+    
+    price < 0 이면 `IllegalArgumentException` 발생
+    
+    ```java
+    if(price < 0) throw new IllegalArgumentException("가격은 음수가 될 수 없습니다.");
+    ```
+    
+
+---
+
+---
+
+# 7. 출력 예 (최종 실행 흐름 예시)
+
+[Book] Title: 해리포터 / Price: 12000 / Author: J.K. Rowling
+[Movie] Title: 인셉션 / Price: 15000 / Running Time: 148min
+[Music] Title: Dynamite / Price: 2000 / Singer: BTS
+
+[Book] 해리포터 구매 완료
+[Book] 해리포터 대여 완료
+대여 기간 연장 완료
+
+[Movie] 인셉션 구매 완료
+[Movie] 인셉션 대여 완료
+대여 기간 연장 완료
+
+[Music] Dynamite 구매 완료
