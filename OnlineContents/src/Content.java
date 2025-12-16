@@ -1,4 +1,4 @@
-public class Content {
+public abstract class Content {
     protected String title;
     protected int price;
 
@@ -27,4 +27,7 @@ public class Content {
         if(price < 0) throw new IllegalArgumentException("가격은 음수가 될 수 없습니다.");
         this.price = price;
     }
+
+    public abstract void printDetail();
+
 }

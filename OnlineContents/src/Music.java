@@ -16,4 +16,9 @@ public class Music extends Content implements Purchasable{
     public void showInfo(){
         System.out.println("[Music] Title: " + title + " /" + " Price: " + price + " /" + " Singer:" + singer);
     }
+
+    @Override
+    public void printDetail() {
+        System.out.println("Singer: " + singer);
+    }
 }
